@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/weather.svg" id="favicon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+  </head>
+  <body>
+    <div id="app" class="passive">
+      <div id="mainContainer">
+        <div id="inputContainer">
+          <input type="text" id="cityInput" placeholder="Type here..." autofocus />
+          <ul id="cityDropdown"></ul>
+        </div>
+        <div id="outputContainer">
+          <div class="column">
+            <div id="weatherInfo" class="passive">
+              <h2 id="cityName">Enter a city name to get the weather forecast</h2>
+              <p id="temperature"></p>
+              <p id="localTime"></p>
+            </div>
+          </div>
+          <div class="vl"></div>
+          <div class="column">
+            <div id="weatherDetails">
+              <div id="humidity"></div>
+              <div id="windSpeed"></div>
+              <div id="weatherDescription"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/App.js"></script>
+    <script src="https://kit.fontawesome.com/1c315f6cae.js" crossorigin="anonymous"></script>
+  </body>
+</html>
