@@ -31,14 +31,14 @@ yarn run dev
 
 > &#8618; I've implemented autocomplete feature for city names provided by GeoDB. You don't need to pay for this, neither.
 
-##### In api.js file:
+#### In api.js file:
 
 | Name                                     | Change This                            | To This                              |
 | :--------------------------------------- | :------------------------------------- | :----------------------------------- |
 | `cityApiOptions.headers[X-RapidAPI-Key]` | `import.meta.env.VITE_CITY_API_KEY`    | Your GeoDB Cities API **(Required)** |
 | `weatherApiKey`                          | `import.meta.env.VITE_WEATHER_API_KEY` | Your OpenWeather API **(Required)**  |
 
-##### or
+#### or
 
 > Set **VITE_CITY_API_KEY** and **VITE_WEATHER_API_KEY** in your environmental variables to the keys you get.
 
