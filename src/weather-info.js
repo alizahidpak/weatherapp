@@ -5,9 +5,9 @@ const temperatureElement = document.getElementById('temperature');
 const humidityElement = document.getElementById('humidity');
 const windSpeedElement = document.getElementById('windSpeed');
 const weatherDescriptionElement = document.getElementById('weatherDescription');
+const localTimeElement = document.getElementById('localTime');
 let timeShown = null;
 
-// Weather info: Temperature, Local Time, Humidity, Wind Speed, Weather Description
 async function updateWeatherInfo(cityName) {
   clearInterval(timeShown);
 
@@ -28,16 +28,14 @@ async function updateWeatherInfo(cityName) {
   `;
   weatherDescriptionElement.innerHTML = result.weather[0].main;
 
-  function updateLocalTime() {
-    const localTimeElement = document.getElementById('localTime');
-    localTimeElement.innerHTML = getLocalTime(result.timezone);
-  }
-
-  updateLocalTime();
-  timeShown = setInterval(updateLocalTime, 1000);
+  updateLocalTime(result.timezone);
+  timeShown = setInterval(updateLocalTime, 1000, result.timezone);
 }
 
-// Getting Local Time and Timezone
+function updateLocalTime(timezone) {
+  localTimeElement.innerHTML = getLocalTime(timezone);
+}
+
 function getLocalTime(timezoneOffset) {
   const currentTime = new Date();
   const localOffset = currentTime.getTimezoneOffset() * 60000;
@@ -56,7 +54,6 @@ function getLocalTimezone(timezoneOffset) {
   return `GMT${offsetSign}${padZero(offsetHours)}:${padZero(offsetMinutes)}`;
 }
 
-// Helper function to pad zeroes
 function padZero(number) {
   return number.toString().padStart(2, '0');
 }

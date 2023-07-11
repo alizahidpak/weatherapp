@@ -17,14 +17,12 @@
   --spacing-sm: calc(var(--spacing-md) / 2);
 }
 
-/* Reset */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-/* General */
 a {
   font-weight: 500;
   color: #646cff;
@@ -39,7 +37,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 h1,
@@ -57,7 +55,7 @@ h2 {
 
 #mainContainer {
   display: flex;
-  min-height: 40vh;
+  min-height: 40dvh;
   flex-direction: column;
   margin: 0 auto;
   row-gap: var(--spacing-md);
@@ -77,25 +75,44 @@ h2 {
   height: 100%;
 }
 
-/* Input */
 #inputContainer {
+  display: flex;
+  align-items: center;
   position: relative;
   grid-column: 1 / -1;
-  height: 40px;
+  height: 45px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px;
+  background-color: #3b3b3b;
 }
 
 #cityInput {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   box-sizing: border-box;
+  border: none;
+}
+
+#cityInput:focus {
+  outline: none;
+}
+
+.spinner {
+  top: 50%;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top: 2px solid #555;
+  transform: translateY(-50%);
+  animation: spin 1s linear infinite;
 }
 
 #cityDropdown {
   position: absolute;
   width: 100%;
   top: 100%;
+  left: 0;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -129,7 +146,7 @@ h2 {
 #weatherInfo {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 100%;
   transition: all 1s ease-in-out;
 }
@@ -161,7 +178,7 @@ h2 {
   font-size: 1.5em;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 100%;
 }
 
@@ -198,7 +215,14 @@ h2 {
   border-left: 1px solid #ccc;
 }
 
+.hidden {
+  display: none;
+}
+
+/* ///////////////////////////// */
 /* Animations */
+/* ///////////////////////////// */
+
 @keyframes slide-in {
   0% {
     transform: translateY(100%);
@@ -210,7 +234,19 @@ h2 {
   }
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ///////////////////////////// */
 /* Responsive  */
+/* ///////////////////////////// */
+
 @media (max-width: 90em) {
   html {
     font-size: 87.5%;

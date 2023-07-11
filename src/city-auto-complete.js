@@ -5,26 +5,26 @@ import { updateWeatherInfo } from './weather-info';
 const inputField = document.getElementById('cityInput');
 const dropdownList = document.getElementById('cityDropdown');
 const appContainer = document.getElementById('app');
+const spinner = document.querySelector('.spinner');
 
 let delayTimer = null;
 
-// Handle the input event on the dropdown list
 async function handleInput(event) {
   clearTimeout(delayTimer);
-  const cityName = event.target.value;
-  dropdownList.innerHTML = '<li>Fetching data, please wait...</li>';
 
+  const cityName = event.target.value;
   if (cityName.length > 0) {
+    spinner.classList.remove('hidden');
     delayTimer = setTimeout(async () => {
       const cityData = await fetchCityData(cityName);
-      updateDropdown(cityData);
-    }, 1000);
+      await updateDropdown(cityData);
+      spinner.classList.add('hidden');
+    }, 1500);
   } else {
     dropdownList.innerHTML = '';
   }
 }
 
-// Fetch city data from the API
 async function fetchCityData(cityName) {
   const response = await fetch(
     `${cityApiUrl}?namePrefix=${cityName}&limit=10&sort=-population`,
@@ -34,7 +34,6 @@ async function fetchCityData(cityName) {
   return result.data || [];
 }
 
-// Filter the city data by checking if the city exists in the weather API and sort it by population
 async function filterApi(cityData) {
   const filteredData = [];
 
@@ -55,34 +54,39 @@ async function filterApi(cityData) {
   return filteredData.sort((a, b) => b.population - a.population);
 }
 
-// Update the dropdown list with the city data
 async function updateDropdown(cityData) {
   const resultCityData = await filterApi(cityData);
 
   dropdownList.innerHTML = '';
 
-  // If there are no matching cities, display a message
   if (resultCityData.length === 0) {
     dropdownList.innerHTML = '<li>No results found.</li>';
     return;
   }
 
-  // Populate the dropdown list with the filtered city data
-  const cityName = inputField.value.toLowerCase(); // Get lowercase input value
+  const cityName = latinize(inputField.value.toLowerCase());
   resultCityData.forEach((city) => {
     const listItem = document.createElement('li');
     const cityText = `${city.city}, ${city.countryCode}`;
-    const index = latinize(cityText).toLowerCase().indexOf(cityName); // Get the index of the matching letters
+    const regex = new RegExp(`${cityName}`, 'gi');
+    const latinizedCityText = latinize(cityText.toLowerCase());
+    const matches = latinizedCityText.match(regex);
 
-    if (index !== -1) {
-      // If there is a match, make the matching letters bold
-      const boldText = document.createElement('b');
-      boldText.textContent = cityText.slice(index, cityName.length);
-      listItem.appendChild(document.createTextNode(cityText.slice(0, index)));
-      listItem.appendChild(boldText);
-      listItem.appendChild(document.createTextNode(cityText.slice(index + cityName.length)));
+    if (matches) {
+      let currentIndex = 0;
+      matches.forEach((match) => {
+        const latinizedMatch = latinize(match);
+        const matchIndex = latinizedCityText.indexOf(latinizedMatch, currentIndex);
+        const beforeMatch = cityText.slice(currentIndex, matchIndex);
+        const boldText = document.createElement('b');
+        boldText.textContent = cityText.slice(matchIndex, matchIndex + latinizedMatch.length);
+        listItem.appendChild(document.createTextNode(beforeMatch));
+        listItem.appendChild(boldText);
+        currentIndex = matchIndex + latinizedMatch.length;
+      });
+      const afterMatch = cityText.slice(currentIndex);
+      listItem.appendChild(document.createTextNode(afterMatch));
     } else {
-      // If there is no match, display the city name as is
       listItem.textContent = cityText;
     }
 
@@ -90,7 +94,6 @@ async function updateDropdown(cityData) {
   });
 }
 
-// Handle the click event on the results in the dropdown list
 async function handleDropdownItemClick(event) {
   const selectedCity = event.target.textContent;
   inputField.value = '';
