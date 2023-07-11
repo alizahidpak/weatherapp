@@ -21,6 +21,7 @@ async function handleInput(event) {
       spinner.classList.add('hidden');
     }, 1500);
   } else {
+    spinner.classList.add('hidden');
     dropdownList.innerHTML = '';
   }
 }
